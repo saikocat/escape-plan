@@ -1,15 +1,9 @@
 # escape-plan
-Harsh truths: You'll never be an L6
+Harsh truths:
+* You'll never be an L6
+* You'll never be forever an L4
 
 ## Exercises
 1. Implement division without using division operator:
-    ```bash
-    $ cd exercises
-    $ kotlinc -script division-operator.kts -- <x> <y>
-    $ kotlinc -script division-operator.kts -- 42 0
-    Division_operator$DivZeroException: divided by zero
-    $ kotlinc -script division-operator.kts -- 42 8
-    42 / 8 = 5
-    $ kotlinc -script division-operator.kts -- 42 -8
-    42 / -8 = -5
-    ```
+    * Tailrec with single divisor step
+    * Binary Search approach with 2^n divisor step size

@@ -9,10 +9,34 @@ fun divide(x: Int, y: Int): Int {
         }
     }
 
-    val sign: Lazy<Int> = lazy { if ((x < 0) || (y < 0)) -1 else 1 }
-    return div(kotlin.math.abs(x), kotlin.math.abs(y)) * sign.value
+    val neg: Lazy<Int> = lazy { if ((x < 0) || (y < 0)) -1 else 1 }
+    return div(kotlin.math.abs(x), kotlin.math.abs(y)) * neg.value
 }
 
+// not handling overflow integer
+fun divideBinarySearch(x: Long, y: Long): Long {
+    // positive value only
+    fun div(x: Long, y: Long): Long {
+        if (y == 0L) throw DivZeroException()
+        if (x < y) return 0
+
+        var multiple = 1L
+        var sum = y
+        while ((sum + sum) <= x) {
+            sum += sum
+            multiple += multiple
+        }
+
+        // remainder => re-apply the search recursively
+        return div(x - sum, y) + multiple
+    }
+
+    val neg: Lazy<Int> = lazy { if ((x < 0) || (y < 0)) -1 else 1 }
+    return div(kotlin.math.abs(x), kotlin.math.abs(y)) * neg.value
+}
+
+
 // Main without error handling
-val (x, y) = Pair(args[0].toInt(), args[1].toInt())
-println("${x} / ${y} = ${divide(x, y)}")
+// kotlinc -script division-operator.kts -- <x> <y>
+// val (x, y) = Pair(args[0].toInt(), args[1].toInt())
+// println("${x} / ${y} = ${divide(x, y)}")
