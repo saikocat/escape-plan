@@ -31,7 +31,7 @@ class Queue(val incoming: List<Int>, val outgoing: List<Int>) {
 
     fun pop(): Pair<Queue, Int> = when {
         outgoing.isEmpty() && !incoming.isEmpty() -> {
-            val rev = incoming.asReversed()
+            val rev = incoming // .asReversed()
             Pair(Queue(emptyList(), rev.tail()), rev.head())
         }
         !outgoing.isEmpty() -> Pair(Queue(incoming, outgoing.tail()), outgoing.head())
@@ -39,12 +39,14 @@ class Queue(val incoming: List<Int>, val outgoing: List<Int>) {
     }
 
     override fun toString(): String =
-        "Queue{incoming: ${incoming}; outgoing: ${outgoing}}"
+        "Queue{incoming:${incoming}; outgoing:${outgoing}}"
 }
 
+// Enable assertion in JVM
+// $ kotlinc -J-ea -script 
 val qq = Queue()
 val eq1 = qq.push(234)
-val eq2 = qq.push(567)
+val eq2 = eq1.push(567)
 println(qq)
 println(eq1)
 println(eq2)
