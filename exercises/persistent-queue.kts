@@ -1,20 +1,5 @@
-/*
-class Queue {
-    Queue push(int value);
-    Pair<Queue, int> pop();
-};
-Queue qq = new Queue()
-eq1 = qq.push(234)
-eq2 = eq1.push(567)
-assert(eq2.pop().second == 567)
-assert(eq2.pop().first.pop().second == 234)
-assert(eq2.pop().first.pop().empty())
-assert(eq1.pop().second == 234)
-assert(eq1.pop().first.empty())
-*/
-
 // Kotlin list is immutable
-class Queue(val incoming: List<Int>, val outgoing: List<Int>) {
+class SlowPersistentQueue(val incoming: List<Int>, val outgoing: List<Int>) {
     constructor(): this(emptyList(), emptyList())
 
     // Helper
@@ -31,7 +16,8 @@ class Queue(val incoming: List<Int>, val outgoing: List<Int>) {
 
     fun pop(): Pair<Queue, Int> = when {
         outgoing.isEmpty() && !incoming.isEmpty() -> {
-            val rev = incoming // .asReversed()
+            // O(n) here for linkedlist :(
+            val rev = incoming.asReversed()
             Pair(Queue(emptyList(), rev.tail()), rev.head())
         }
         !outgoing.isEmpty() -> Pair(Queue(incoming, outgoing.tail()), outgoing.head())
@@ -44,15 +30,15 @@ class Queue(val incoming: List<Int>, val outgoing: List<Int>) {
 
 // Enable assertion in JVM
 // $ kotlinc -J-ea -script 
-val qq = Queue()
+val qq = SlowPersistentQueue()
 val eq1 = qq.push(234)
 val eq2 = eq1.push(567)
 println(qq)
 println(eq1)
 println(eq2)
 println(eq2.pop())
-assert(eq2.pop().second == 567)
-assert(eq2.pop().first.pop().second == 234)
+assert(eq2.pop().second == 234)
+assert(eq2.pop().first.pop().second == 567)
 assert(eq2.pop().first.pop().first.isEmpty())
 assert(eq1.pop().second == 234)
 assert(eq1.pop().first.isEmpty())
